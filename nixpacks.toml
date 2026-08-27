@@ -1,0 +1,12 @@
+# Configuracion de build para Nixpacks (Dokploy)
+providers = ["node"]
+
+[variables]
+# Node 22: necesario para la opcion --env-file-if-exists del script de arranque
+NIXPACKS_NODE_VERSION = "22"
+
+[phases.install]
+cmds = ["npm ci --omit=dev"]
+
+[start]
+cmd = "node --env-file-if-exists=.env src/server.js"
