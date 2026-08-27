@@ -92,6 +92,15 @@ button:hover { filter: brightness(1.05); }
   border-radius: 8px;
 }
 
+.hint {
+  background: #eef6ec;
+  border: 1px solid #cfe6c9;
+  color: #2f6d2a;
+  padding: .75rem 1rem;
+  border-radius: 8px;
+  max-width: 520px;
+}
+
 .row-between {
   display: flex;
   align-items: center;

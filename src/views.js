@@ -76,17 +76,23 @@ export function confirmationPage() {
   );
 }
 
-export function loginPage({ error } = {}) {
+export function loginPage({ error, hint } = {}) {
   return layout(
     "Acceder al panel",
     `<h1>Acceso al panel</h1>
     ${error ? `<p class="alert">${esc(error)}</p>` : ""}
+    ${
+      hint
+        ? `<p class="hint">Datos de acceso — Usuario: <strong>${esc(hint.user)}</strong> ·
+           Contraseña: <strong>${esc(hint.password)}</strong></p>`
+        : ""
+    }
     <form method="post" action="/admin/login" class="card">
       <label>Usuario
-        <input name="user" autofocus required>
+        <input name="user" autofocus required value="${hint ? esc(hint.user) : ""}">
       </label>
       <label>Contraseña
-        <input type="password" name="password" required>
+        <input type="password" name="password" required value="${hint ? esc(hint.password) : ""}">
       </label>
       <button type="submit">Entrar</button>
     </form>`

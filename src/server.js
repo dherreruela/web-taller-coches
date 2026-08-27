@@ -21,6 +21,9 @@ const PORT = process.env.PORT || 3000;
 const ADMIN_USER = process.env.ADMIN_USER || "admin";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "cambia-esta-clave";
 const VALID_STATUSES = new Set(["pendiente", "confirmada", "completada", "cancelada"]);
+// Muestra usuario y contraseña en la pantalla de login (útil para enseñar la
+// demo a un cliente). Ponlo en "false" o quita la variable en producción.
+const LOGIN_HINT = process.env.LOGIN_HINT === "true";
 
 // Token de sesión sin estado: HMAC del usuario+contraseña.
 // Si cambia la contraseña, las cookies antiguas dejan de valer.
@@ -98,7 +101,12 @@ function requireAuth(req, res, next) {
 app.get("/admin/login", (req, res) => {
   const cookies = parseCookies(req);
   if (cookies[COOKIE_NAME] === SESSION_TOKEN) return res.redirect("/admin");
-  res.send(loginPage({ error: req.query.error ? "Usuario o contraseña incorrectos" : null }));
+  res.send(
+    loginPage({
+      error: req.query.error ? "Usuario o contraseña incorrectos" : null,
+      hint: LOGIN_HINT ? { user: ADMIN_USER, password: ADMIN_PASSWORD } : null,
+    })
+  );
 });
 
 app.post("/admin/login", (req, res) => {
