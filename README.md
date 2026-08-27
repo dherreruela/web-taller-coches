@@ -7,10 +7,10 @@ reciba solicitudes de cita de sus clientes y las gestione desde un panel.
 
 - **`/`** — Formulario público de solicitud de cita (nombre, teléfono, email,
   vehículo, servicio, fecha/hora preferida y comentarios).
-- **`/admin`** — Panel protegido con Basic Auth para ver todas las citas,
-  cambiar su estado (`pendiente`, `confirmada`, `completada`, `cancelada`) y
-  eliminarlas.
-- **`/health`** — Endpoint de salud para los health checks de Dokploy.
+- **`/admin`** — Panel protegido (formulario de login con cookie, o Basic Auth
+  para llamadas por API) para ver todas las citas, cambiar su estado
+  (`pendiente`, `confirmada`, `completada`, `cancelada`) y eliminarlas.
+- **`/health`** — Endpoint de salud (`{ "ok": true }`).
 
 Los datos se guardan en un único fichero SQLite (`better-sqlite3`).
 
@@ -24,51 +24,39 @@ npm run dev               # http://localhost:3000
 
 ## Variables de entorno
 
-| Variable         | Por defecto            | Descripción                                  |
-|------------------|------------------------|----------------------------------------------|
-| `PORT`           | `3000`                 | Puerto HTTP                                   |
-| `TALLER_NOMBRE`  | `Taller Mecánico`      | Nombre que se muestra en la cabecera         |
-| `DB_PATH`        | `./data/taller.db`     | Ruta del fichero SQLite                       |
-| `ADMIN_USER`     | `admin`                | Usuario del panel                            |
-| `ADMIN_PASSWORD` | `cambia-esta-clave`    | **Cámbiala siempre en producción**           |
+| Variable         | Por defecto            | Descripción                                           |
+|------------------|------------------------|------------------------------------------------------|
+| `PORT`           | `3000`                 | Puerto HTTP                                           |
+| `TALLER_NOMBRE`  | `Taller Mecánico`      | Nombre que se muestra en la cabecera                  |
+| `DB_PATH`        | `./data/taller.db`     | Ruta del fichero SQLite                               |
+| `ADMIN_USER`     | `admin`                | Usuario del panel                                     |
+| `ADMIN_PASSWORD` | `cambia-esta-clave`    | **Cámbiala siempre en producción**                   |
+| `SESSION_SECRET` | (usa `ADMIN_PASSWORD`) | Secreto para firmar la cookie de sesión              |
+| `LOGIN_HINT`     | `false`                | Si es `true`, muestra usuario/contraseña en el login |
 
-## Despliegue en Dokploy
+## Puesta en producción (sin Docker)
 
-1. **Crear la aplicación**
-   - En Dokploy: *Create Application* → tipo **Dockerfile**.
-   - Conecta este repositorio (o sube el código) y deja el *Build Path* en `/`.
-     Dokploy detectará el `Dockerfile` de la raíz.
-
-2. **Variables de entorno** (pestaña *Environment*)
+1. Clona el repositorio en el servidor e instala dependencias:
+   ```bash
+   git clone <repo> && cd web-taller-coches
+   npm install --omit=dev
    ```
-   TALLER_NOMBRE=Taller Mecánico Pepe
-   ADMIN_USER=admin
-   ADMIN_PASSWORD=una-clave-larga-y-secreta
-   DB_PATH=/data/taller.db
+2. Crea un `.env` (o exporta las variables) con al menos `ADMIN_PASSWORD` y
+   `DB_PATH` apuntando a una ruta persistente, p. ej. `DB_PATH=/var/lib/taller/taller.db`.
+3. Arranca con un gestor de procesos para que se reinicie solo:
+   ```bash
+   npm start                      # arranque simple
+   # o con pm2:
+   pm2 start "npm start" --name taller
    ```
-   > `PORT` puede dejarse en 3000; es el puerto que expone el contenedor.
-
-3. **Volumen persistente** (pestaña *Volumes* / *Mounts*) — imprescindible para
-   no perder las citas en cada redeploy:
-   - Tipo: **Volume Mount**
-   - *Volume Name*: `taller-data`
-   - *Mount Path*: `/data`
-
-4. **Dominio y puerto** (pestaña *Domains*)
-   - Añade tu dominio y apunta el *Container Port* a **3000**.
-   - Activa HTTPS (Let's Encrypt).
-
-5. **Health check** (opcional, pestaña *Advanced*)
-   - Path: `/health`
-
-6. **Deploy.** Cada `git push` a la rama configurada (o pulsar *Deploy*)
-   reconstruye la imagen y publica la nueva versión conservando el volumen.
+4. Pon un proxy inverso (Nginx / Caddy) delante para el dominio y el HTTPS,
+   redirigiendo al puerto `3000`.
 
 ### Notas
 
+- SQLite usa modo WAL; junto a `taller.db` se crean `taller.db-wal` y
+  `taller.db-shm` en el mismo directorio.
+- Copia de seguridad: basta con copiar el fichero de `DB_PATH` (mejor con el
+  servicio parado o usando `sqlite3 .backup`).
 - `better-sqlite3` incluye binarios precompilados para Linux x64/arm64, así que
-  la imagen construye sin herramientas de compilación.
-- SQLite usa modo WAL; el volumen en `/data` guarda `taller.db`, `taller.db-wal`
-  y `taller.db-shm`.
-- Copia de seguridad: basta con descargar el fichero `/data/taller.db` del
-  volumen.
+  `npm install` no necesita herramientas de compilación.

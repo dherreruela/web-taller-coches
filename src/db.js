@@ -2,8 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import Database from "better-sqlite3";
 
-// La ruta del fichero SQLite es configurable para poder montar un volumen
-// persistente en Dokploy (p. ej. DB_PATH=/data/taller.db).
+// La ruta del fichero SQLite es configurable (DB_PATH) para poder ubicarla
+// en un disco o volumen persistente segun el entorno.
 const DB_PATH = process.env.DB_PATH || path.join(process.cwd(), "data", "taller.db");
 
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });

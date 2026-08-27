@@ -53,7 +53,7 @@ function credentialsOk(user, pass) {
   return user === ADMIN_USER && pass === ADMIN_PASSWORD;
 }
 
-// --- Salud (para health checks de Dokploy) ---
+// --- Salud (health check) ---
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
 // --- Público: formulario de cita ---
