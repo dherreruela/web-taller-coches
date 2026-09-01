@@ -28,7 +28,22 @@ header {
   color: #fff;
 }
 
-.brand { font-weight: 700; font-size: 1.15rem; text-decoration: none; color: #fff; }
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  text-decoration: none;
+  color: #fff;
+}
+.brand-logo {
+  display: block;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
 header nav a { color: #cdd3dc; text-decoration: none; margin-left: 1rem; }
 header nav a:hover { color: #fff; }
 

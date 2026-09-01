@@ -20,7 +20,10 @@ function layout(title, body) {
 </head>
 <body>
   <header>
-    <a class="brand" href="/">🔧 ${esc(TALLER)}</a>
+    <a class="brand" href="/">
+      <img src="/logo.svg" alt="Logo" class="brand-logo" width="34" height="34">
+      <span>${esc(TALLER)}</span>
+    </a>
     <nav><a href="/">Pedir cita</a> <a href="/admin">Panel</a></nav>
   </header>
   <main>${body}</main>

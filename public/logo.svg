@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="36" height="36" fill="none">
+  <defs>
+    <linearGradient id="badge-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#b91c1c" />
+    </linearGradient>
+    <linearGradient id="silver-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Fondo de insignia redondeada con relieve -->
+  <rect width="100" height="100" rx="22" fill="url(#badge-grad)" />
+  <rect x="4" y="4" width="92" height="92" rx="18" stroke="#ffffff" stroke-width="2" stroke-opacity="0.25"/>
+
+  <!-- Líneas dinámicas de velocidad traseras -->
+  <path d="M10 46 L20 46" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+  <path d="M6 52 L14 52" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Carrocería del coche -->
+  <path d="M17 58 C17 55, 19 53, 22 53 L26 53 C29 45, 36 38, 45 37 L64 37 C73 37, 80 43, 83 51 L86 53 C89 55, 91 58, 91 62 L91 65 C91 67, 89 68, 87 68 L81 68 C80 62, 75 57, 68 57 C61 57, 56 62, 55 68 L40 68 C39 62, 34 57, 27 57 C21 57, 17 61, 16 66 L15 66 C13 66, 12 64, 12 62 L12 59 C12 57, 14 56, 17 58 Z" fill="url(#silver-grad)"/>
+
+  <!-- Luna delantera y ventanas -->
+  <path d="M44 41 L63 41 C67 41, 71 44, 73 49 L39 49 C40 45, 41 42, 44 41 Z" fill="#0f172a"/>
+  <!-- Reflejo azul en el cristal -->
+  <path d="M47 43 L60 43 C63 43, 66 45, 68 48 L44 48 Z" fill="#38bdf8" opacity="0.6"/>
+
+  <!-- Faro delantero -->
+  <path d="M85 55 L89 57 L85 59 Z" fill="#fef08a"/>
+
+  <!-- Ruedas y llantas deportivas -->
+  <!-- Rueda delantera -->
+  <circle cx="68" cy="68" r="9.5" fill="#0f172a" stroke="url(#silver-grad)" stroke-width="2.5"/>
+  <circle cx="68" cy="68" r="4" fill="#ef4444"/>
+  <circle cx="68" cy="68" r="1.5" fill="#ffffff"/>
+
+  <!-- Rueda trasera -->
+  <circle cx="27" cy="68" r="9.5" fill="#0f172a" stroke="url(#silver-grad)" stroke-width="2.5"/>
+  <circle cx="27" cy="68" r="4" fill="#ef4444"/>
+  <circle cx="27" cy="68" r="1.5" fill="#ffffff"/>
+</svg>
