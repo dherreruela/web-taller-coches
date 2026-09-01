@@ -34,7 +34,29 @@ npm run dev               # http://localhost:3000
 | `SESSION_SECRET` | (usa `ADMIN_PASSWORD`) | Secreto para firmar la cookie de sesión              |
 | `LOGIN_HINT`     | `false`                | Si es `true`, muestra usuario/contraseña en el login |
 
-## Puesta en producción (sin Docker)
+## Despliegue en Dokploy (Nixpacks)
+
+El proyecto incluye el archivo [`nixpacks.toml`](nixpacks.toml) ya preparado para Dokploy.
+
+1. **Crear Aplicación en Dokploy**:
+   - Tipo de Build: **Nixpacks**.
+   - Puerto del contenedor: **`3000`**.
+2. **Volumen persistente (Importante para SQLite)**:
+   - En la sección **Mounts / Volumes**, añade un volumen:
+     - **Host Path / Volume Name**: `taller-data`
+     - **Mount Path**: `/app/data`
+3. **Variables de Entorno**:
+   Configura en el panel de Dokploy:
+   - `NODE_ENV=production`
+   - `PORT=3000`
+   - `DB_PATH=/app/data/taller.db`
+   - `ADMIN_USER=admin`
+   - `ADMIN_PASSWORD=tu_clave_segura`
+   - `SESSION_SECRET=clave_aleatoria_para_sesiones`
+   - `TALLER_NOMBRE=Nombre de tu Taller`
+   - `LOGIN_HINT=false`
+
+## Puesta en producción (sin Docker / Bare Metal)
 
 1. Clona el repositorio en el servidor e instala dependencias:
    ```bash

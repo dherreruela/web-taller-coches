@@ -4,6 +4,7 @@ providers = ["node"]
 [variables]
 # Node 22: necesario para la opcion --env-file-if-exists del script de arranque
 NIXPACKS_NODE_VERSION = "22"
+NODE_ENV = "production"
 
 [phases.install]
 cmds = ["npm ci --omit=dev"]
